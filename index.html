@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fotstream – Watch Live Football Free</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green: #00e676;
+      --dark: #080f0a;
+      --card: #0d1a10;
+      --border: rgba(0,230,118,0.18);
+      --text: #e8f5e9;
+      --muted: #8fad95;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Pitch texture background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          rgba(0,230,118,0.025) 0px, rgba(0,230,118,0.025) 1px,
+          transparent 1px, transparent 60px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(0,230,118,0.025) 0px, rgba(0,230,118,0.025) 1px,
+          transparent 1px, transparent 60px
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow blob */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(0,230,118,0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 6vw;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 3px;
+      color: var(--green);
+      text-shadow: 0 0 24px rgba(0,230,118,0.5);
+    }
+
+    .logo span { color: var(--text); }
+
+    .nav-badge {
+      background: rgba(0,230,118,0.12);
+      border: 1px solid var(--border);
+      color: var(--green);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 90px 6vw 60px;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,230,118,0.08);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 28px;
+    }
+
+    .live-dot {
+      width: 8px; height: 8px;
+      background: #ff1744;
+      border-radius: 50%;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7.5rem);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--green);
+      text-shadow: 0 0 40px rgba(0,230,118,0.5);
+    }
+
+    .hero-sub {
+      margin: 24px auto 0;
+      max-width: 520px;
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── DOWNLOAD BUTTON ── */
+    .btn-wrap {
+      margin-top: 44px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--green);
+      color: #040a06;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      padding: 16px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(0,230,118,0.35);
+    }
+
+    .btn-download:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 50px rgba(0,230,118,0.55);
+    }
+
+    .btn-download svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    .free-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── LEAGUES ── */
+    .leagues {
+      position: relative;
+      z-index: 1;
+      padding: 60px 6vw 20px;
+      text-align: center;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .league-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .league-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .league-chip:hover { border-color: var(--green); transform: translateY(-2px); }
+    .league-chip .flag { font-size: 1.1rem; }
+
+    /* ── FEATURES ── */
+    .features {
+      position: relative;
+      z-index: 1;
+      padding: 80px 6vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .feature-card:hover { border-color: var(--green); transform: translateY(-4px); }
+
+    .feat-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feat-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .feat-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── CTA STRIP ── */
+    .cta-strip {
+      position: relative;
+      z-index: 1;
+      margin: 20px 6vw 80px;
+      background: linear-gradient(135deg, rgba(0,230,118,0.1), rgba(0,230,118,0.04));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 52px 40px;
+      text-align: center;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-strip h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .cta-strip p {
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-size: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 30px 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer .logo { font-size: 1.4rem; }
+
+    footer p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .features { padding: 50px 5vw; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Fot<span>stream</span></div>
+    <div class="nav-badge">Free App</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      Live Now
+    </div>
+    <h1>Watch <em>Live</em><br>Football Free</h1>
+    <p class="hero-sub">
+      Stream EPL, La Liga, Serie A, Bundesliga and more live matches — anytime, anywhere. No subscription. Completely free.
+    </p>
+    <div class="btn-wrap">
+      <a href="https://play.google.com/store/apps/details?id=com.fotstream.app" target="_blank" class="btn-download">
+        <!-- Google Play icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.18 23.76c.38.22.82.24 1.22.06L15.34 12 4.4.18C4 0 3.56.02 3.18.24 2.44.67 2 1.47 2 2.34v19.32c0 .87.44 1.67 1.18 2.1z"/>
+          <path d="M20.8 10.33l-3.14-1.8-3.62 3.47 3.62 3.47 3.17-1.82c.9-.52.9-1.8-.03-2.32z"/>
+          <path d="M4.4.18l10.19 11.35L5.69 2.76 4.4.18z" opacity=".6"/>
+          <path d="M4.4 23.82l9.59-8.64-10.19 11.35 .6-2.71z" opacity=".6"/>
+        </svg>
+        Download on Google Play
+      </a>
+    </div>
+    <div style="margin-top:18px;">
+      <span class="free-tag">✓ &nbsp;100% Free &nbsp;·&nbsp; No Subscription &nbsp;·&nbsp; No Login Required</span>
+    </div>
+  </section>
+
+  <!-- LEAGUES -->
+  <section class="leagues">
+    <p class="section-label">Leagues Available</p>
+    <div class="league-row">
+      <div class="league-chip"><span class="flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Premier League</div>
+      <div class="league-chip"><span class="flag">🇪🇸</span> La Liga</div>
+      <div class="league-chip"><span class="flag">🇩🇪</span> Bundesliga</div>
+      <div class="league-chip"><span class="flag">🇮🇹</span> Serie A</div>
+      <div class="league-chip"><span class="flag">🇫🇷</span> Ligue 1</div>
+      <div class="league-chip"><span class="flag">🌍</span> Champions League</div>
+      <div class="league-chip"><span class="flag">🌍</span> Europa League</div>
+      <div class="league-chip"><span class="flag">⚽</span> & More</div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="feature-card">
+      <span class="feat-icon">📡</span>
+      <div class="feat-title">Live Streaming</div>
+      <p class="feat-desc">Watch every match as it happens with real-time live streams straight to your phone.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feat-icon">💸</span>
+      <div class="feat-title">Totally Free</div>
+      <p class="feat-desc">No subscription, no hidden fees. Download the app and start watching immediately.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feat-icon">📱</span>
+      <div class="feat-title">Watch Anywhere</div>
+      <p class="feat-desc">Available on Android. Optimized for mobile so you never miss a goal on the go.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feat-icon">🏆</span>
+      <div class="feat-title">Top Leagues</div>
+      <p class="feat-desc">EPL, La Liga, Bundesliga, Serie A, Champions League — all the biggest competitions in one place.</p>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <div class="cta-strip">
+    <h2>Ready to Watch?</h2>
+    <p>Download Fotstream now and enjoy free live football — no credit card needed.</p>
+    <a href="https://play.google.com/store/apps/details?id=com.fotstream.app" target="_blank" class="btn-download">
+      <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3.18 23.76c.38.22.82.24 1.22.06L15.34 12 4.4.18C4 0 3.56.02 3.18.24 2.44.67 2 1.47 2 2.34v19.32c0 .87.44 1.67 1.18 2.1z"/>
+        <path d="M20.8 10.33l-3.14-1.8-3.62 3.47 3.62 3.47 3.17-1.82c.9-.52.9-1.8-.03-2.32z"/>
+        <path d="M4.4.18l10.19 11.35L5.69 2.76 4.4.18z" opacity=".6"/>
+        <path d="M4.4 23.82l9.59-8.64-10.19 11.35 .6-2.71z" opacity=".6"/>
+      </svg>
+      Get it on Google Play — Free
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">Fot<span>stream</span></div>
+    <p>© 2025 Fotstream · Free live football streaming app</p>
+  </footer>
+
+</body>
+</html>
